@@ -1,26 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState, useMemo } from 'react';
+import { TodoContext } from './contexts/TodoContext'
+import InputTodo from './components/InputTodo'
+import TodoList from './components/TodoList'
+import Paper from '@material-ui/core/Paper';
 import './App.css';
 
-function App() {
+const App = () => {
+  const [todo, setTodo] = useState([
+    {
+        'todo': 'create todo list',
+        'isComplete': false
+    }
+  ])
+
+  const todoProvider = useMemo(() => ({ todo, setTodo }), [todo, setTodo])
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Paper elevation={2}>
+      <TodoContext.Provider value={todoProvider}>
+        <InputTodo />
+        <TodoList />
+      </TodoContext.Provider>
+    </Paper>
+  )
 }
 
 export default App;
